@@ -9,11 +9,9 @@ const io = require('socket.io')(3000, {
 })
 
 io.on('connection', socket => {
-    console.log(socket.id + 'is connected')
     const name = socket.handshake.query.name
     
     if (waitingList.size == 0) {
-        console.log('Append')
         waitingList.set(socket.id, name)
     }else {
 
@@ -36,9 +34,7 @@ io.on('connection', socket => {
             _name: targetName,
             _socketId: targetId
         })
-        console.log('Dispatch pair')
     }
-    console.log(waitingList)
 
     socket.on('send', (message, targetId) => {
         socket.to(targetId).emit('receive', message)
@@ -49,7 +45,6 @@ io.on('connection', socket => {
     })
 
     socket.on('disconnect', () => {
-        console.log(socket.id + ' disconnected :(')
 
         if (waitingList.has(socket.id)) {
             waitingList.delete(socket.id)
@@ -63,14 +58,4 @@ io.on('connection', socket => {
             pairs.delete(socket.id)
         }
     })
-
-    /*
-    socket.on('dc', (socket) => {
-        console.log(socket.id)
-        waitingList = waitingList.filter((item) => {
-            return item._socketId !== socket.id
-        })
-        console.log(waitingList)
-    })*/
-
 })

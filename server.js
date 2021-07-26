@@ -8,6 +8,10 @@ const io = require('socket.io')(3000, {
     },
 })
 
+io.on("connect_error", (err) => {
+  console.log(`connect_error due to ${err.message}`);
+})
+
 io.on('connection', socket => {
     const name = socket.handshake.query.name
     console.log(socket.id + ' connected.')

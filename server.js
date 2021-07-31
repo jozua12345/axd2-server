@@ -1,10 +1,12 @@
+require('dotenv').config()
+
 let HashMap = require('hashmap')
 let waitingList = new HashMap()
 let pairs = new HashMap()
 
 const io = require('socket.io')(3000, {
     cors: {
-        origin: ['http://localhost:8080', 'http://localhost:5000'],
+        origin: [process.env.CLIENT_URL],
     },
 })
 

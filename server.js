@@ -16,7 +16,6 @@ io.on("connect_error", (err) => {
 
 io.on('connection', socket => {
     const name = socket.handshake.query.name
-    console.log(socket.id + ' connected.')
     
     if (waitingList.size == 0) {
         waitingList.set(socket.id, name)

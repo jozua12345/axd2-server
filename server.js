@@ -10,8 +10,8 @@ if (process.env.HTTPS == 'false') {
 }else {
     const fs = require('fs')
     server = require('https').createServer({
-        key: fs.readFileSync('privkey.pem'),
-        cert: fs.readFileSync('fullchain.pem')
+        key: fs.readFileSync(process.env.SSL_KEY_PATH),
+        cert: fs.readFileSync(process.env.SSL_CERT_PATH)
     })
 }
 

@@ -3,8 +3,19 @@ require('dotenv').config()
 let HashMap = require('hashmap')
 let waitingList = new HashMap()
 let pairs = new HashMap()
+let server
 
-const io = require('socket.io')(3000, {
+if (process.env.HTTPS == 'false') {
+    server = require('http').createServer()
+}else {
+    const fs = require('fs')
+    server = require('https').createServer({
+        key: fs.readFileSync('privkey.pem'),
+        cert: fs.readFileSync('fullchain.pem')
+    })
+}
+
+const io = require('socket.io')(server, {
     cors: {
         origin: [process.env.CLIENT_URL],
     },
@@ -65,3 +76,5 @@ io.on('connection', socket => {
         }
     })
 })
+
+server.listen(3000)
